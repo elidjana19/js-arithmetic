@@ -28,7 +28,7 @@ pjesa dhjetore
 0.6*2= 1.2 1 
 shohim se kemi perseritje dhe do duhen infinit iteracione per te arritur prodhimin e barabarte me 1,
 por kjo nuk ndodh sepse kompjuteri ka nje nr fiks te biteve qe ruan numra parandaj do kryejme
-rrumbullakim qe sjell edhe faktorin e gabimit te precizionit
+rrumbullakim qe sjell edhe faktorin e gabimit ne precizion
 Pra pjesa dhjetore e nr nuk do kete nje paraqitje 100% te sakte ne binar
 Per shkak te ketyre nr te cilet nuk mund te perfaqesohen preciz ne format binar kemi edhe rezulate te gabuara si shembulli me lart
 
@@ -36,14 +36,13 @@ Per shkak te ketyre nr te cilet nuk mund te perfaqesohen preciz ne format binar 
 
 E kthejme ne format IEE754 64 bit
 
-0.000110011....... e kthejme ne format shkencor 1.1001100110011001100110011001100110011001100110011×2 power(−4)
+nr binar e kthejme ne format shkencor 1.1001100110011001100110011001100110011001100110011×2 power(−4)
  
 ku shenja eshte pozitive :0 (1bit)
-eksponenti (11bit) eshte -4 + 1023 per formatin 64 bit
-per te arritur formatin shkencor te nr
-pjesa pas presjes eshte mantisa (52bit)
+eksponenti (11bit) eshte -4 + 1023(per formatin 64 bit) = 1019 
+pjesa pas presjes eshte mantisa (52bit) tek formati shkencor
 
-0 10000000011 1001100110011001100110011001100110011001100110011... IEEE754 per 0.1
+0 01111111100 1001100110011001100110011001100110011001100110011001 IEEE754 per 0.1
 
 
 0.2 ne binar
@@ -58,26 +57,32 @@ pjesa pas presjes eshte mantisa (52bit)
 0.8*2=1.6  1
 0.6*2=1.2  1
 0.2*2= 0.4 0 
-shohim se kemi perseritje dhe do duhen infinit iteracioni per te arritur prodhimin e barabarte me 1
+shohim se kemi perseritje dhe do duhen infinit iteracione per te arritur prodhimin e barabarte me 1
 Per shkak te ketyre nr te cilet nuk mund te perfaqesohen preciz ne format binar kemi edhe rezulate te gabuara si shembulli me lart
 
 0.2~ 0.0011001100.....
 
 E kthejme ne format IEE754
 
+nr binar e kthejme ne format shkencor 1.1001100110011001100110011001100110011001100110011010× 2 power(−3)
 shenja + prandaj 0 
-eksponenti -3 i shtojme 1023
+eksponenti -3 i shtojme 1023= 1020 (11bit)
 
-0 10000000010 1001100110011001100110011001100110011001100110011... IEEE754 per 0.2
-Duke perdorur vlerat binare behen edhe veprimet qe duam, por duke qene se nr kane nje fare rrumbullakimi per 
-tu kthyer ne binar pasi disa prej tyre hasin problemin e perseritjes qe e theksove ma lart marrim rezultate jo te sakta
+0 01111111100 1001100110011001100110011001100110011001100110011010 IEEE754 per 0.2
+
+Duke qene se numri binar si per 0.1 si per 0.2 nuk eshte i fundem, ne momentin qe llogarisim mantisen ne kufizohemi ne 52 bite 
+pasi aq na lejon formati IEEE754, prandaj ndodhin dhe gabimet me veprimet matematikore, pasi futet gabimi i rrumbullakosjes, pasi numri
+nuk shprehet plotesisht i sakte.
+Prandaj, edhe shuma e tyre (0.2 + 0.1) gjithashtu nuk mund te jete saktesisht 0.3 
 
 
-Pra mosperputhja lind sepse 0.1 dhe 0.2 nuk mund të perfaqesohen 
-saktesisht ne formatin binar floating point për shkak 
-te paraqitjeve te tyre binar te perseritura,  ku veprimet qe e vertetojnen kete i kam kryer edhe me lart.
+Per te llogaritur shumezimin per shembull shumezohen mantisat e dy numrave.
+per te kryer mbledhje perseri mblidhen mantisat pasi kujdeset per rregullimin e eksponenteve,
+por per shkak te limitimeve te perfaqesimit binar ne IEEE754 marrim edhe rezultat jo te sakte.
+mantisa perfaqeson bitet me me shume peshe.
 
-Prandaj, shuma e tyre (0.2 + 0.1) gjithashtu nuk mund te jete saktesisht 0.3 
+
+
 
 Zgjidhje per kete problematike mund te jete kthimi i floating point numbers ne integers, kryerja e veprimit aritmetikor dhe kthimi perseri ne nr dhejtor ne fund
 
@@ -103,6 +108,6 @@ ne floating point i tij eshte me i vogel.
 Ndersa kur mbledhim apo * rezultati eshte me i madh dhe ndodh qe vlera rezultat te mos shprehet
 saktesisht dhe ekzakte per shkak te limitimeve te IEEE754
 
-Per kete kam ndertuar edhe nje metode e cila kujdeset per te shamguar rezultatet jo te sakta kur mbledhim apo shumezojme por edhe per zbritjen pasi sbulli i mesiperm tregonte 
+Per kete kam ndertuar edhe nje metode e cila kujdeset per te shamguar rezultatet jo te sakta kur mbledhim apo shumezojme por edhe per zbritjen pasi shembulli i mesiperm tregonte 
 se edhe tek zbritja ky problem haset.
 Nga provat e kryera shoh se funksioni kujdeset per ta rregulluar kete problem.
