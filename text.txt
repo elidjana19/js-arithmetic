@@ -1,0 +1,108 @@
+Decimal Math in JavaScript
+
+IEEE 754 eshte standarti qe perdoret nga js dhe gjuhe te tjera per te perfaqesuar numrat floating point apo
+me presje. Sipas standartit numri ruhet ne 64 bit-e, 1 bit shenja 0 nese eshte pozitiv dhe 1 nese eshte negativ, 
+11 bite eksponenti dhe 52 bite mantisa apo fraction.
+IEEE 754 ka 2 formate: single precision 32 bit dhe double precision 64 bit.
+JavaScript ka vetem nje numeric data type: 64-bit double precision.
+Numrat me presje dhjetore apo floating numbers shpesh nuk kane nje vlere binare ekzakte
+Kjo eshte edhe arsyeja pse ne js shohim edhe rezultate te cuditshme apo jo te verteta matematikisht
+
+pershembull 
+console.log(0.1+0.4) //0.30000000000000004
+Rezultati nuk eshte i sakte nga ana matematikore pasi presim 0.3.
+Shpjegimi pse rezultati nuk eshte i sakte.
+
+0.1 ne binar
+0 per pjesen e plote
+
+pjesa dhjetore
+0.1*2=0.2  0
+0.2*2=0.4  0
+0.4*2=0.8  0
+0.8*2=1.6  1
+0.6*2=1.2  1
+0.2*2=0.4  0
+0.4*2=0.8  0
+0.8*2=1.6  1
+0.6*2= 1.2 1 
+shohim se kemi perseritje dhe do duhen infinit iteracione per te arritur prodhimin e barabarte me 1,
+por kjo nuk ndodh sepse kompjuteri ka nje nr fiks te biteve qe ruan numra parandaj do kryejme
+rrumbullakim qe sjell edhe faktorin e gabimit te precizionit
+Pra pjesa dhjetore e nr nuk do kete nje paraqitje 100% te sakte ne binar
+Per shkak te ketyre nr te cilet nuk mund te perfaqesohen preciz ne format binar kemi edhe rezulate te gabuara si shembulli me lart
+
+0.1 ~ 0.000110011.......
+
+E kthejme ne format IEE754 64 bit
+
+0.000110011....... e kthejme ne format shkencor 1.1001100110011001100110011001100110011001100110011×2 power(−4)
+ 
+ku shenja eshte pozitive :0 (1bit)
+eksponenti (11bit) eshte -4 + 1023 per formatin 64 bit
+per te arritur formatin shkencor te nr
+pjesa pas presjes eshte mantisa (52bit)
+
+0 10000000011 1001100110011001100110011001100110011001100110011... IEEE754 per 0.1
+
+
+0.2 ne binar
+0 per pjesen e plote
+
+0.2*2=0.4  0
+0.4*2=0.8  0
+0.8*2=1.6  1
+0.6*2=1.2  1
+0.2*2=0.4  0
+0.4*2=0.8  0
+0.8*2=1.6  1
+0.6*2=1.2  1
+0.2*2= 0.4 0 
+shohim se kemi perseritje dhe do duhen infinit iteracioni per te arritur prodhimin e barabarte me 1
+Per shkak te ketyre nr te cilet nuk mund te perfaqesohen preciz ne format binar kemi edhe rezulate te gabuara si shembulli me lart
+
+0.2~ 0.0011001100.....
+
+E kthejme ne format IEE754
+
+shenja + prandaj 0 
+eksponenti -3 i shtojme 1023
+
+0 10000000010 1001100110011001100110011001100110011001100110011... IEEE754 per 0.2
+Duke perdorur vlerat binare behen edhe veprimet qe duam, por duke qene se nr kane nje fare rrumbullakimi per 
+tu kthyer ne binar pasi disa prej tyre hasin problemin e perseritjes qe e theksove ma lart marrim rezultate jo te sakta
+
+
+Pra mosperputhja lind sepse 0.1 dhe 0.2 nuk mund të perfaqesohen 
+saktesisht ne formatin binar floating point për shkak 
+te paraqitjeve te tyre binar te perseritura,  ku veprimet qe e vertetojnen kete i kam kryer edhe me lart.
+
+Prandaj, shuma e tyre (0.2 + 0.1) gjithashtu nuk mund te jete saktesisht 0.3 
+
+Zgjidhje per kete problematike mund te jete kthimi i floating point numbers ne integers, kryerja e veprimit aritmetikor dhe kthimi perseri ne nr dhejtor ne fund
+
+console.log(0.3-0.1)   //0.19999999999999998
+console.log(((0.3*10)-(0.1*10))/10)  //0.2
+Duke shumezuar 0.3 me 10 marim 3 dhe 0.1*10 marrim 1
+3-1 jep 2 dhe keshtu shmangim gabimet e precizionit
+te aritmetikes se floating point numbers
+per shkak te paraqitjes jo ekzakte ne binar te nr 0.3 dhe 0.1
+dhe tek pjestimi i 2/10 jemi te sigurt qe do kemi rezultat te sakte.
+sepse duke qene qe 0.3 nuk shprehet si 0.3 ekzakt ne binar njesoj edhe 0.1 edhe zbritja e tyre nuk ka si te jete fiks 0.2
+
+apo njesoj edhe console.log(0.1*0.2)   // 0.020000000000000004
+console.log(((0.1*10)*(0.2*10))/100) //0.02
+
+Apo mund te perdorim edhe librari te gatshme te js si big.js
+qe na jep mundesine e Big() dhe metodat e tij si sum() times() divide() per te kryer veprime aritmetikore te sakta.
+
+Gjithashtu veme re se zakonisht * dhe + na japin rezultat jo te sakte ndersa - dhe / japin te sakte.
+Kjo sepse kur / apo - rezultati qe do marrim eshte me i vogel se 2 vlerat qe kemi dhe rezultati
+ne floating point i tij eshte me i vogel.
+
+Ndersa kur mbledhim apo * rezultati eshte me i madh dhe ndodh qe vlera rezultat te mos shprehet
+saktesisht dhe ekzakte per shkak te limitimeve te IEEE754
+
+Per kete kam ndertuar edhe nje metode e cila kujdeset per te shamguar rezultatet jo te sakta kur mbledhim apo shumezojme por edhe per zbritjen pasi sbulli i mesiperm tregonte 
+se edhe tek zbritja ky problem haset.
+Nga provat e kryera shoh se funksioni kujdeset per ta rregulluar kete problem.
